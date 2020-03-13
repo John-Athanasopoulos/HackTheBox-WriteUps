@@ -1,0 +1,20 @@
+Easy Phish - write up
+
+In this OSINT challenge the flag consits of two sub-flags hidden in the information you have to check.
+To be able to fully understand the concept of this challenge we have to study how email impersonation works
+by clicking the following link: https://blog.ironbastion.com.au/email-impersonation-scams-phishing-what-your-staff-can-do/
+
+It is also important to know what SPF, DKIM and DMARC are:
+https://knowledge.ondmarc.redsift.com/en/articles/1519838-querying-spf-dkim-and-dmarc-records
+
+After that we can start the challenge.
+
+We first search for secure-startup.com in https://dnsdumpster.com/ and if we scroll down, we will find the first part of the
+flag which is: HTB{RIP_SPF_Always_2nd
+OR
+We can actually find the first part of the flag by running: nslookup -type=txt secure-startup.com , in the linux terminal.
+
+After that, we have to find the second part of the flag. To do that, we have to run: nslookup -type=txt _dmarc.secure-startup.com ,
+or go to a site that runs dmarc requests. Thus we find the second part of the flag which is: _F1ddl3_2_DMARC}
+
+So the flag we are after is: HTB{RIP_SPF_Always_2nd_F1ddl3_2_DMARC}
