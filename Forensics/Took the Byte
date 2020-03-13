@@ -1,0 +1,5 @@
+Took the Byte - Writeup
+
+We download the file from HTB and extract the password file. We open the file in CyberChef and open the following recipe:
+XOR (with key:ff) / Unzip
+We see that then we can download a password.txt file which is the file containing our password. So we open the file and the password is: HTB{27AjFDkqi1wJ}
