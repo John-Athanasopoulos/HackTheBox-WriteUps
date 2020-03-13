@@ -1,0 +1,73 @@
+Bank Heist - writeup
+
+If I was the one categorizing this challenge, I would not submit it under the category of easy, but rather
+the medium challenges, as it has a lot of difficulties and needs a combination of hard thinking, adapting to real life
+scenarios and some basic scripting. Without further ado, let's start with the write up.
+
+After downloading and extracting the file bank_heist_message.txt, we open it and see a series of numbers.
+Based on the scenario of the challenge, and as that this text was written in a flip phone, we start to decode
+the message based on the diagram below:
+
+-1. [special characters.. not needed for this challenge]
+-2. [A][B][C]
+-3. [D][E][F]
+-4. [G][H][I]
+-5. [J][K][L]
+-6. [M][N][O]
+-7. [P][Q][R][S]
+-8. [T][U][V]
+-9. [W][X][Y][Z]
+-0. [_]
+
+So if we press 3 times 4, we get "I", if we press 2 times 5, we get "K" etc.
+After we decode the message either with a simple script or by hand, we get the following message:
+
+\\IF YOU ARE READING THE CIPHER, YOU ARE OKAY. YOUR SHARE OF THE HEIST IS IN YOUR HOUSE. THE KEY TO
+\\THE LOCK IS BELOW. GO TO PARIS.
+\\GSV XLWV GL GSV HZU OLXP : TLIVGRIVNVMGUFMW!!
+
+We still can't read the final line though which probably holds the flag for the challenge.
+We have no more clues so we have to play the guessing game.
+
+After some time, I thought GSV (which appears two times in the encoded message) stands for THE and tried to find
+some connection between GSV and THE. I realised that there was a connection between their indexes in the alphabet list.
+
+So:
+G = 6 and T = 19. G + T = 6 + 19 = 25
+S = 18 and H = 7. S + H = 18 + 7 = 25
+V = 21 and E = 4. V + E = 21 + 4 = 25
+
+So the message is encoded in a format similar to the Caesar Cipher one, where the sum of the indices of the encoded and
+decoded letters is equal to 25.
+
+Running the following basic python script, we get the result we want.
+
+\\SCRIPT//
+
+#!/bin/python3
+alph = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+fl = "GSV XLWV GL GSV HZU OLXP TLIVGRIVNVMGUFMW"
+un = fl.split()
+message = ""
+for word in un:
+	for char in word:
+		num = 25 - alph.index(char)
+		message += alph[num]
+	if word != "TLIVGRIVNVMGUFMW":
+		message+=" "
+	else:
+		pass
+message +="!!"
+print(message)
+flag_mess = message.split(" ")
+flag = "HTB{"+flag_mess[len(flag_mess) - 1]+"}"
+print("Flag: "+ flag)
+
+\\SCRIPT//
+
+The result we get from this script is:
+
+THE CODE TO THE SAF LOCK GORETIREMENTFUND!!
+Flag: HTB{GORETIREMENTFUND!!}
+
+So by submtting the flag HTB{GORETIREMENTFUND!!} we complete the Bank Heist Challenge.
